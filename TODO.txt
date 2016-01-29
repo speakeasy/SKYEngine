@@ -1,0 +1,8 @@
+SkyEngine:
+
+Game thread -> Thread pool manager -> priority thread pools -> worker threadss
+  \->Timer updates/ weight ^-------------------^------------------->...
+    ^---threads worked/priority--<-/------------------<-/
+        ^----remaining work-----<-/------------------<-/
+
+	
