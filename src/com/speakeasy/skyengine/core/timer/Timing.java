@@ -102,6 +102,7 @@ public class Timing {
                         return times;
                     }
                 }
+                times++;
                 return 1;
             }
         }
