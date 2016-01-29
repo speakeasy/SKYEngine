@@ -24,7 +24,7 @@ public class GameTimer extends Thread {
     private static int updatess = 100; // Number of updates per second.
     private static boolean running = false;
     public static GameTimer gametimer;
-
+    
     private GameTimer(int updatess, boolean run) {
         GameTimer.updatess = updatess;
         if (run) {

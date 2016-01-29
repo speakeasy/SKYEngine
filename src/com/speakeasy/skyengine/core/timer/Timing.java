@@ -21,11 +21,8 @@ package com.speakeasy.skyengine.core.timer;
  */
 public class Timing {
 
-    private static final PriorityLevel DEFAULT_PRIORITY = PriorityLevel.MEDIUM;
-
     protected Timing timing;
 
-    protected final TimerPriority priority;
     protected final long nanoseconds;
     protected int times;
 
@@ -33,10 +30,7 @@ public class Timing {
     private long lasttimens;
     private long lasttimensB;
 
-    private Timing(TimerPriority priority, int microseconds, int seconds, int minutes, int hours, int times) {
-        if (priority == null) {
-            priority = new TimerPriority(DEFAULT_PRIORITY);
-        }
+    private Timing(int microseconds, int seconds, int minutes, int hours, int times) {
         if (microseconds < 0) {
             microseconds = 0;
         }
@@ -49,89 +43,70 @@ public class Timing {
         if (hours < 0) {
             hours = 0;
         }
-        this.priority = priority;
+
         long ns = getNanoSeconds(microseconds, seconds, minutes, hours);
-        if (ns < 1) {
+        if (ns < 5000) {
             ns = 5000;
         }
         this.nanoseconds = ns;
         this.lasttimens = System.nanoTime();
         this.timeleftns = 0;
+        if (times == 0) {
+            times--;
+        }
         this.times = times;
     }
 
     public Timing newTiming(int times) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), 0, 0, 0, 0, times);
+        timing = new Timing(0, 0, 0, 0, times);
         return timing;
     }
 
     public Timing newTiming(int microseconds, int times) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, 0, 0, 0, times);
+        timing = new Timing(microseconds, 0, 0, 0, times);
         return timing;
     }
 
     public Timing newTiming(int microseconds, int seconds, int times) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, 0, 0, times);
+        timing = new Timing(microseconds, seconds, 0, 0, times);
         return timing;
     }
 
     public Timing newTiming(int microseconds, int seconds, int minutes, int times) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, minutes, 0, times);
+        timing = new Timing(microseconds, seconds, minutes, 0, times);
         return timing;
     }
 
     public Timing newTiming(int microseconds, int seconds, int minutes, int hours, int times) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, minutes, hours, times);
+        timing = new Timing(microseconds, seconds, minutes, hours, times);
         return timing;
     }
 
-    public Timing newTiming(TimerPriority priority, int times) {
-        timing = new Timing(priority, 0, 0, 0, 0, times);
-        return timing;
-    }
-
-    public Timing newTiming(TimerPriority priority, int microseconds, int times) {
-        timing = new Timing(priority, microseconds, 0, 0, 0, times);
-        return timing;
-    }
-
-    public Timing newTiming(TimerPriority priority, int microseconds, int seconds, int times) {
-        timing = new Timing(priority, microseconds, seconds, 0, 0, times);
-        return timing;
-    }
-
-    public Timing newTiming(TimerPriority priority, int microseconds, int seconds, int minutes, int times) {
-        timing = new Timing(priority, microseconds, seconds, minutes, 0, times);
-        return timing;
-    }
-
-    public Timing newTiming(TimerPriority priority, int microseconds, int seconds, int minutes, int hours, int times) {
-        timing = new Timing(priority, microseconds, seconds, minutes, hours, times);
-        return timing;
-    }
-
-    public long getTimeLeft() {
+    public long getTimeRemaining() {
         lasttimensB = System.nanoTime();
         timeleftns -= (lasttimensB - lasttimens);
         lasttimens = lasttimensB;
         return timeleftns;
     }
 
-    public boolean update() {
+    public int update() {
         lasttimensB = System.nanoTime();
         timeleftns -= (lasttimensB - lasttimens);
         lasttimens = lasttimensB;
         if (timeleftns <= 0.5) {
-            if (times > 1) {
+            if (times > 0 || times == -1) {
                 timeleftns = nanoseconds - timeleftns;
+                times--;
+                if (times > 0) {
+                    return times;
+                }
+                return 1;
             }
-            times--;
-            return true;
         }
-        return false;
+        return times;
     }
 
-    public long getNanoSeconds(int microseconds, int seconds, int minutes, int hours) {
+    public final long getNanoSeconds(int microseconds, int seconds, int minutes, int hours) {
         return ((long) (((long) microseconds * 10000000.0) + ((long) seconds * 1000000000.0) + ((long) minutes * 60000000000.0) + ((long) hours * 3600000000000.0)));
     }
 
