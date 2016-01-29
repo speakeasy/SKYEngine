@@ -113,6 +113,10 @@ public class Timing {
         return 0;
     }
 
+    public void setTimes(int times) {
+        this.times = times;
+    }
+    
     public final long getNanoSeconds(int microseconds, int seconds, int minutes, int hours) {
         return ((long) (((long) microseconds * 10000000.0) + ((long) seconds * 1000000000.0) + ((long) minutes * 60000000000.0) + ((long) hours * 3600000000000.0)));
     }
