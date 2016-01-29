@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SpeaKeasY.
+ * Copyright 2016 Kevin Owen Burress <speakeasysky@gmail.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,14 @@ public class Timing {
 
     public Timing timing;
 
-    protected TimerPriority priority;
-    protected int microseconds;
-    protected int seconds;
-    protected int minutes;
-    protected int hours;
-    private boolean initialized = false;
+    protected final TimerPriority priority;
+    protected final long nanoseconds;
 
-    private Timing(TimerPriority priority, int microseconds, int seconds, int minutes, int hours, boolean initialized) {
+    protected long timeleftns;
+    private long lasttimens;
+    private long lasttimensB;
+
+    private Timing(TimerPriority priority, int microseconds, int seconds, int minutes, int hours, boolean run) {
         if (priority == null) {
             priority = new TimerPriority(DEFAULT_PRIORITY);
         }
@@ -49,11 +49,13 @@ public class Timing {
             hours = 0;
         }
         this.priority = priority;
-        this.microseconds = microseconds;
-        this.seconds = seconds;
-        this.minutes = minutes;
-        this.hours = hours;
-        this.initialized = true;
+        long ns = getNanoSeconds(microseconds, seconds, minutes, hours);
+        if (ns < 1) {
+            ns = 5000;
+        }
+        this.nanoseconds = ns;
+        this.lasttimens = System.nanoTime();
+        this.timeleftns = 0;
     }
 
     public Timing getNewTiming() {
@@ -104,6 +106,28 @@ public class Timing {
     public Timing getNewTiming(TimerPriority priority, int microseconds, int seconds, int minutes, int hours) {
         timing = new Timing(priority, microseconds, seconds, minutes, hours, true);
         return timing;
+    }
+
+    public long getTimeLeft() {
+        lasttimensB = System.nanoTime();
+        timeleftns -= (lasttimensB - lasttimens);
+        lasttimens = lasttimensB;
+        return timeleftns;
+    }
+
+    public boolean update() {
+        lasttimensB = System.nanoTime();
+        timeleftns -= (lasttimensB - lasttimens);
+        lasttimens = lasttimensB;
+        if (timeleftns <= 0.5) {
+            timeleftns = nanoseconds - timeleftns;
+            return true;
+        }
+        return false;
+    }
+
+    public long getNanoSeconds(int microseconds, int seconds, int minutes, int hours) {
+        return ((long) (((long) microseconds * 10000000.0) + ((long) seconds * 1000000000.0) + ((long) minutes * 60000000000.0) + ((long) hours * 3600000000000.0)));
     }
 
 }

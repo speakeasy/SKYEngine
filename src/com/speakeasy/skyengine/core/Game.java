@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SpeaKeasY.
+ * Copyright 2016 Kevin Owen Burress <speakeasysky@gmail.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,18 @@
  */
 package com.speakeasy.skyengine.core;
 
+import com.speakeasy.skyengine.core.timer.GameTimer;
+
 /**
  *
  * @author SpeaKeasY
  */
 public class Game {
     
+    protected static GameTimer gametimer;
+    
     public Game() {
-        ;
+        gametimer = GameTimer.newGameTimer();
     }
     
 }

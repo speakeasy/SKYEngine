@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SpeaKeasY.
+ * Copyright 2016 Kevin Owen Burress <speakeasysky@gmail.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,6 @@ package com.speakeasy.skyengine.core.timer;
  * @author SpeaKeasY
  */
 public class TimerPriority extends Priority {
-    
-    public TimerPriority() {
-        ;
-    }
     
     public TimerPriority(PriorityLevel level) {
         this.setPriorityLevel(level);

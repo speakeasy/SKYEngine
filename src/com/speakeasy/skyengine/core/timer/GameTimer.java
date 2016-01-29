@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 SpeaKeasY.
+ * Copyright 2016 Kevin Owen Burress <speakeasysky@gmail.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,88 +21,75 @@ package com.speakeasy.skyengine.core.timer;
  */
 public class GameTimer extends Thread {
 
-    private static int updatess = 1000; // Number of updates per second.
+    private static int updatess = 100; // Number of updates per second.
     private static boolean running = false;
-    private static GameTimer gametimer;
-    
-    // for second and minute timer statistics.
-    private long lastSecond;
-    private long lastMinute;
+    public static GameTimer gametimer;
 
-    private GameTimer() {
-        gametimer = this;
-    }
-
-    private GameTimer(boolean run) {
-        gametimer = this;
+    private GameTimer(int updatess, boolean run) {
+        GameTimer.updatess = updatess;
         if (run) {
             gametimer.start();
         }
     }
 
-    private GameTimer(int nupdates) {
-        gametimer = this;
-        updatess = nupdates;
+    public static GameTimer newGameTimer() {
+        gametimer = new GameTimer(updatess, false);
+        return gametimer;
     }
 
-    private GameTimer(int nupdates, boolean run) {
-        gametimer = this;
-        updatess = nupdates;
-        if (run) {
-            gametimer.start();
-        }
+    public static GameTimer newGameTimer(boolean run) {
+        gametimer = new GameTimer(updatess, run);
+        return gametimer;
+    }
+
+    public static GameTimer newGameTimer(int updatess) {
+        gametimer = new GameTimer(updatess, false);
+        return gametimer;
+    }
+
+    public static GameTimer newGameTimer(int updatess, boolean run) {
+        gametimer = new GameTimer(updatess, run);
+        return gametimer;
     }
 
     @Override
     public void start() {
+        running = true;
+        this.setPriority(MAX_PRIORITY);
         loop();
-        
-        
     }
 
     private void loop() {
-        long lastTime = this.lastSecond = this.lastMinute = System.nanoTime();
-        
-        final double ns = 1000000000.0 / updatess;
-        int nupdatessec = 0;
-        int nupdatesmin = 0;
+        long lastTime = System.nanoTime();
+
+        final double ns = 1000000000.0 / 1000; // Microsecond.
         double delta = 0;
-        
+        long now;
+
         while (running) {
-            long now = System.nanoTime();
+            now = System.nanoTime();
             delta = delta + ((now - lastTime) / ns);
             lastTime = now;
-            while (delta >= 1)// n times a second
-            {
-                doLogic(); // All time restricted logic.
-                if(nupdatessec++ >= updatess) {
-                    nupdatessec = 0;
-                    secondTimer();
-                    if(nupdatesmin >= 60) {
-                        nupdatesmin = 0;
-                        minuteTimer();
-                    }
-                }
+            while (delta >= 1) {
+                updateTimings();
                 delta--;
+
             }
-            render();//displays to the screen unrestricted time
+            try {
+                Thread.sleep(0, (5000 - (int) (System.nanoTime() - now)));
+            } catch (InterruptedException ie) {
+                ;
+            }
+            async();
         }
     }
 
-    private void doLogic() {
+    private void updateTimings() {
         ;
     }
 
-    private void render() {
+    private void async() {
         ;
-    }
-
-    private void secondTimer() {
-        ;
-    }
-
-    private void minuteTimer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
