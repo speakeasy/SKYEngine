@@ -16,6 +16,7 @@
 package com.speakeasy.skyengine.core.timer;
 
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 
 /**
  *
@@ -86,7 +87,14 @@ public class GameTimer extends Thread {
     }
 
     private void updateTimings() {
-        ;
+        updates.forEach(new BiConsumer<Timing, Boolean>() {
+            @Override
+            public void accept(Timing timing, Boolean trigger) {
+                if (timing.update() > 0) {
+                    updates.put(timing, true);
+                }
+            }
+        });
     }
 
     private void async() {
