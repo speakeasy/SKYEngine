@@ -89,6 +89,10 @@ public class Timing {
         lasttimens = lasttimensB;
         return timeleftns;
     }
+    
+    public int timesLeft() {
+        return times;
+    }
 
     public int update() {
         lasttimensB = System.nanoTime();
