@@ -13,18 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.speakeasy.skyengine.core.timer;
-
-import com.speakeasy.skyengine.core.timer.threading.PriorityLevel;
-import com.speakeasy.skyengine.core.timer.threading.Priority;
+package com.speakeasy.skyengine.core.timer.threading;
 
 /**
  *
  * @author SpeaKeasY
  */
-public class TimerPriority extends Priority {
+public enum PriorityLevel {
+
+    MINIMUM(0),
+    VERY_LOW(1),
+    LOW(2),
+    MEDIUM(3),
+    HIGH(4),
+    VERY_HIGH(5),
+    MAXIMUM(6);
+
+    private final int priority;
+
+    PriorityLevel(int priority) {
+        this.priority = priority;
+    }
     
-    public TimerPriority(PriorityLevel level) {
-        this.setPriorityLevel(level);
+    public int getPriority() {
+        int thepriority = priority;
+        return thepriority;
     }
 }

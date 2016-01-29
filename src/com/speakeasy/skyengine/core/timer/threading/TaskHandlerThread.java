@@ -13,29 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.speakeasy.skyengine.core.timer;
+package com.speakeasy.skyengine.core.timer.threading;
 
 /**
  *
- * @author SpeaKeasY
+ * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class Priority {
-    private PriorityLevel level;
+public class TaskHandlerThread {
     
-    public Priority() {
-        ;
-    }
-    
-    public Priority(PriorityLevel level) {
-        this.level = level;
-    }
-    
-    public PriorityLevel getPriorityLevel() {
-        PriorityLevel thelevel = level;
-        return thelevel;
-    }
-    
-    public void setPriorityLevel(PriorityLevel level) {
-        this.level = level;
-    }
 }

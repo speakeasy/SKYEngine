@@ -25,9 +25,10 @@ public class GameTimer extends Thread {
 
     private static boolean running = false;
     public static GameTimer gametimer;
-    protected static HashMap<Timing, Boolean> updates; 
-    
+    protected static HashMap<Timing, Boolean> updates;
+
     private GameTimer(boolean run) {
+        updates = new HashMap();
         if (run) {
             gametimer.start();
         }
@@ -63,11 +64,12 @@ public class GameTimer extends Thread {
             now = System.nanoTime();
             delta = delta + ((now - lastTime) / ns);
             lastTime = now;
+
             while (delta >= 1) {
                 updateTimings();
                 delta--;
-
             }
+
             try {
                 if (ploss >= 1) {
                     ploss--;
@@ -78,6 +80,7 @@ public class GameTimer extends Thread {
             } catch (InterruptedException ie) {
                 ;
             }
+
             async();
         }
     }
@@ -90,8 +93,47 @@ public class GameTimer extends Thread {
         ;
     }
 
-    public void addTiming() {
-        ;
+    public void putTiming(Timing timing) {
+        updates.put(timing, true);
     }
-    
+
+    public void addTiming(int times) {
+        Timing timing = newTiming(getNanoSeconds(0, 0, 0, 0), times);
+        putTiming(timing);
+    }
+
+    public void addTiming(long nanoseconds, int times) {
+        Timing timing = new Timing(nanoseconds, times);
+        putTiming(timing);
+    }
+
+    public void addTiming(int microseconds, int times) {
+        Timing timing = newTiming(getNanoSeconds(microseconds, 0, 0, 0), times);
+        putTiming(timing);
+    }
+
+    public void addTiming(int microseconds, int seconds, int times) {
+        Timing timing = newTiming(getNanoSeconds(microseconds, seconds, 0, 0), times);
+        putTiming(timing);
+    }
+
+    public void addTiming(int microseconds, int seconds, int minutes, int times) {
+        Timing timing = newTiming(getNanoSeconds(microseconds, seconds, minutes, 0), times);
+        putTiming(timing);
+    }
+
+    public void addTiming(int microseconds, int seconds, int minutes, int hours, int times) {
+        Timing timing = newTiming(getNanoSeconds(microseconds, seconds, minutes, hours), times);
+        putTiming(timing);
+    }
+
+    public Timing newTiming(long nanoseconds, int times) {
+        Timing timing = new Timing(nanoseconds, times);
+        return timing;
+    }
+
+    public long getNanoSeconds(int microseconds, int seconds, int minutes, int hours) {
+        return ((long) (((long) microseconds * 10000000.0) + ((long) seconds * 1000000000.0) + ((long) minutes * 60000000000.0) + ((long) hours * 3600000000000.0)));
+    }
+
 }

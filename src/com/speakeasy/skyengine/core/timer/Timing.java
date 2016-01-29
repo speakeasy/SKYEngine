@@ -21,8 +21,6 @@ package com.speakeasy.skyengine.core.timer;
  */
 public class Timing {
 
-    protected Timing timing;
-
     protected final long nanoseconds;
     protected int times;
 
@@ -30,25 +28,11 @@ public class Timing {
     private long lasttimens;
     private long lasttimensB;
 
-    private Timing(int microseconds, int seconds, int minutes, int hours, int times) {
-        if (microseconds < 0) {
-            microseconds = 0;
+    public Timing(long nanoseconds, int times) {
+        if (nanoseconds < 5000) {
+            nanoseconds = 0;
         }
-        if (seconds < 0) {
-            seconds = 0;
-        }
-        if (minutes < 0) {
-            minutes = 0;
-        }
-        if (hours < 0) {
-            hours = 0;
-        }
-
-        long ns = getNanoSeconds(microseconds, seconds, minutes, hours);
-        if (ns < 5000) {
-            ns = 5000;
-        }
-        this.nanoseconds = ns;
+        this.nanoseconds = nanoseconds;
         this.lasttimens = System.nanoTime();
         this.timeleftns = 0;
         if (times == 0) {
@@ -58,30 +42,7 @@ public class Timing {
         this.times = times;
     }
 
-    public Timing newTiming(int times) {
-        timing = new Timing(0, 0, 0, 0, times);
-        return timing;
-    }
 
-    public Timing newTiming(int microseconds, int times) {
-        timing = new Timing(microseconds, 0, 0, 0, times);
-        return timing;
-    }
-
-    public Timing newTiming(int microseconds, int seconds, int times) {
-        timing = new Timing(microseconds, seconds, 0, 0, times);
-        return timing;
-    }
-
-    public Timing newTiming(int microseconds, int seconds, int minutes, int times) {
-        timing = new Timing(microseconds, seconds, minutes, 0, times);
-        return timing;
-    }
-
-    public Timing newTiming(int microseconds, int seconds, int minutes, int hours, int times) {
-        timing = new Timing(microseconds, seconds, minutes, hours, times);
-        return timing;
-    }
 
     public long getTimeRemaining() {
         lasttimensB = System.nanoTime();
@@ -117,8 +78,6 @@ public class Timing {
         this.times = times;
     }
     
-    public final long getNanoSeconds(int microseconds, int seconds, int minutes, int hours) {
-        return ((long) (((long) microseconds * 10000000.0) + ((long) seconds * 1000000000.0) + ((long) minutes * 60000000000.0) + ((long) hours * 3600000000000.0)));
-    }
+    
 
 }
