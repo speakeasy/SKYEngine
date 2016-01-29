@@ -97,14 +97,15 @@ public class Timing {
         if (timeleftns <= 0.5) {
             if (times > 0 || times == -1) {
                 timeleftns = nanoseconds - timeleftns;
-                if (times > 0) {
-                    times--;
-                    return times;
+                if (times-- > -1) {
+                    if (times > 0) {
+                        return times;
+                    }
                 }
                 return 1;
             }
         }
-        return times;
+        return 0;
     }
 
     public final long getNanoSeconds(int microseconds, int seconds, int minutes, int hours) {
