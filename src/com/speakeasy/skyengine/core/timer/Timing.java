@@ -54,6 +54,7 @@ public class Timing {
         if (times == 0) {
             times--;
         }
+
         this.times = times;
     }
 
