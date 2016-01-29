@@ -27,13 +27,13 @@ public class Timing {
 
     protected final TimerPriority priority;
     protected final long nanoseconds;
-    protected final boolean single;
+    protected int times;
 
     protected long timeleftns;
     private long lasttimens;
     private long lasttimensB;
 
-    private Timing(TimerPriority priority, int microseconds, int seconds, int minutes, int hours, boolean single) {
+    private Timing(TimerPriority priority, int microseconds, int seconds, int minutes, int hours, int times) {
         if (priority == null) {
             priority = new TimerPriority(DEFAULT_PRIORITY);
         }
@@ -57,56 +57,56 @@ public class Timing {
         this.nanoseconds = ns;
         this.lasttimens = System.nanoTime();
         this.timeleftns = 0;
-        this.single = single;
+        this.times = times;
     }
 
-    public Timing newTiming(boolean single) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), 0, 0, 0, 0, single);
+    public Timing newTiming(int times) {
+        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), 0, 0, 0, 0, times);
         return timing;
     }
 
-    public Timing newTiming(int microseconds, boolean single) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, 0, 0, 0, single);
+    public Timing newTiming(int microseconds, int times) {
+        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, 0, 0, 0, times);
         return timing;
     }
 
-    public Timing newTiming(int microseconds, int seconds, boolean single) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, 0, 0, single);
+    public Timing newTiming(int microseconds, int seconds, int times) {
+        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, 0, 0, times);
         return timing;
     }
 
-    public Timing newTiming(int microseconds, int seconds, int minutes, boolean single) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, minutes, 0, single);
+    public Timing newTiming(int microseconds, int seconds, int minutes, int times) {
+        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, minutes, 0, times);
         return timing;
     }
 
-    public Timing newTiming(int microseconds, int seconds, int minutes, int hours, boolean single) {
-        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, minutes, hours, single);
+    public Timing newTiming(int microseconds, int seconds, int minutes, int hours, int times) {
+        timing = new Timing(new TimerPriority(DEFAULT_PRIORITY), microseconds, seconds, minutes, hours, times);
         return timing;
     }
 
-    public Timing newTiming(TimerPriority priority) {
-        timing = new Timing(priority, 0, 0, 0, 0, true);
+    public Timing newTiming(TimerPriority priority, int times) {
+        timing = new Timing(priority, 0, 0, 0, 0, times);
         return timing;
     }
 
-    public Timing newTiming(TimerPriority priority, int microseconds) {
-        timing = new Timing(priority, microseconds, 0, 0, 0, true);
+    public Timing newTiming(TimerPriority priority, int microseconds, int times) {
+        timing = new Timing(priority, microseconds, 0, 0, 0, times);
         return timing;
     }
 
-    public Timing newTiming(TimerPriority priority, int microseconds, int seconds) {
-        timing = new Timing(priority, microseconds, seconds, 0, 0, true);
+    public Timing newTiming(TimerPriority priority, int microseconds, int seconds, int times) {
+        timing = new Timing(priority, microseconds, seconds, 0, 0, times);
         return timing;
     }
 
-    public Timing newTiming(TimerPriority priority, int microseconds, int seconds, int minutes) {
-        timing = new Timing(priority, microseconds, seconds, minutes, 0, true);
+    public Timing newTiming(TimerPriority priority, int microseconds, int seconds, int minutes, int times) {
+        timing = new Timing(priority, microseconds, seconds, minutes, 0, times);
         return timing;
     }
 
-    public Timing newTiming(TimerPriority priority, int microseconds, int seconds, int minutes, int hours) {
-        timing = new Timing(priority, microseconds, seconds, minutes, hours, true);
+    public Timing newTiming(TimerPriority priority, int microseconds, int seconds, int minutes, int hours, int times) {
+        timing = new Timing(priority, microseconds, seconds, minutes, hours, times);
         return timing;
     }
 
@@ -122,9 +122,10 @@ public class Timing {
         timeleftns -= (lasttimensB - lasttimens);
         lasttimens = lasttimensB;
         if (timeleftns <= 0.5) {
-            if (!single) {
+            if (times > 1) {
                 timeleftns = nanoseconds - timeleftns;
             }
+            times--;
             return true;
         }
         return false;
