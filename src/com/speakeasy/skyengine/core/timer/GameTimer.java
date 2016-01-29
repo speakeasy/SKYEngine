@@ -65,6 +65,8 @@ public class GameTimer extends Thread {
         final double ns = 1000000000.0 / 1000; // Microsecond.
         double delta = 0;
         long now;
+        long ploss = 0;
+        int sleep;
 
         while (running) {
             now = System.nanoTime();
@@ -76,7 +78,12 @@ public class GameTimer extends Thread {
 
             }
             try {
-                Thread.sleep(0, (5000 - (int) (System.nanoTime() - now)));
+                if (ploss >= 1) {
+                    ploss--;
+                    now--;
+                }
+                Thread.sleep(0, (sleep = 5000 - (int) (ploss = System.nanoTime() - now)));
+                ploss = ploss - sleep;
             } catch (InterruptedException ie) {
                 ;
             }
