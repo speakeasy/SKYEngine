@@ -23,35 +23,23 @@ import java.util.HashMap;
  */
 public class GameTimer extends Thread {
 
-    private static int updatess = 100; // Number of updates per second.
     private static boolean running = false;
     public static GameTimer gametimer;
     protected static HashMap<Timing, Boolean> updates; 
     
-    private GameTimer(int updatess, boolean run) {
-        GameTimer.updatess = updatess;
+    private GameTimer(boolean run) {
         if (run) {
             gametimer.start();
         }
     }
 
     public static GameTimer newGameTimer() {
-        gametimer = new GameTimer(updatess, false);
+        gametimer = new GameTimer(false);
         return gametimer;
     }
 
     public static GameTimer newGameTimer(boolean run) {
-        gametimer = new GameTimer(updatess, run);
-        return gametimer;
-    }
-
-    public static GameTimer newGameTimer(int updatess) {
-        gametimer = new GameTimer(updatess, false);
-        return gametimer;
-    }
-
-    public static GameTimer newGameTimer(int updatess, boolean run) {
-        gametimer = new GameTimer(updatess, run);
+        gametimer = new GameTimer(run);
         return gametimer;
     }
 
