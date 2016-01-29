@@ -24,11 +24,11 @@ import java.util.HashMap;
 public class GameTimer extends Thread {
 
     private static boolean running = false;
-    public static GameTimer gametimer;
+    private static GameTimer gametimer;
     protected static HashMap<Timing, Boolean> updates;
-    private static HashMap<Integer, Timing> idxupdates;
-    private static int itrupdates = 0;
-    private static int sizeupdates = 0;
+    private static HashMap<Integer, Timing> updatesidx;
+    private static int updatesitr = 0;
+    private static int updatessize = 0;
     private static Timing atiming;
 
     private GameTimer(boolean run) {
@@ -58,7 +58,7 @@ public class GameTimer extends Thread {
     private void loop() {
         long lastTime = System.nanoTime();
 
-        final double ns = 1000000000.0 / (10000000 / 5); // Microsecond.
+        final double ns = 1000000000.0 / (1000000 / 5); // Milliseconds.
         double delta = 0;
         long now;
         long ploss = 0;
@@ -90,9 +90,9 @@ public class GameTimer extends Thread {
     }
 
     private void updateTimings() {
-        itrupdates = 0;
-        while (itrupdates <= sizeupdates) {
-            atiming = idxupdates.get(itrupdates);
+        updatesitr = 0;
+        while (updatesitr <= updatessize) {
+            atiming = updatesidx.get(updatesitr);
             if (atiming.update() > 0) {
                 updates.put(atiming, true);
             }
@@ -105,7 +105,7 @@ public class GameTimer extends Thread {
 
     public void putTiming(Timing timing) {
         updates.put(timing, true);
-        idxupdates.put(idxupdates.size(), timing);
+        updatesidx.put(updatesidx.size(), timing);
     }
 
     public void addTiming(int times) {
@@ -118,23 +118,23 @@ public class GameTimer extends Thread {
         putTiming(timing);
     }
 
-    public void addTiming(int microseconds, int times) {
-        Timing timing = newTiming(getNanoSeconds(microseconds, 0, 0, 0), times);
+    public void addTiming(int milliseconds, int times) {
+        Timing timing = newTiming(getNanoSeconds(milliseconds, 0, 0, 0), times);
         putTiming(timing);
     }
 
-    public void addTiming(int microseconds, int seconds, int times) {
-        Timing timing = newTiming(getNanoSeconds(microseconds, seconds, 0, 0), times);
+    public void addTiming(int milliseconds, int seconds, int times) {
+        Timing timing = newTiming(getNanoSeconds(milliseconds, seconds, 0, 0), times);
         putTiming(timing);
     }
 
-    public void addTiming(int microseconds, int seconds, int minutes, int times) {
-        Timing timing = newTiming(getNanoSeconds(microseconds, seconds, minutes, 0), times);
+    public void addTiming(int milliseconds, int seconds, int minutes, int times) {
+        Timing timing = newTiming(getNanoSeconds(milliseconds, seconds, minutes, 0), times);
         putTiming(timing);
     }
 
-    public void addTiming(int microseconds, int seconds, int minutes, int hours, int times) {
-        Timing timing = newTiming(getNanoSeconds(microseconds, seconds, minutes, hours), times);
+    public void addTiming(int milliseconds, int seconds, int minutes, int hours, int times) {
+        Timing timing = newTiming(getNanoSeconds(milliseconds, seconds, minutes, hours), times);
         putTiming(timing);
     }
 
@@ -143,8 +143,25 @@ public class GameTimer extends Thread {
         return timing;
     }
 
-    public long getNanoSeconds(int microseconds, int seconds, int minutes, int hours) {
-        return ((long) (((long) microseconds * 10000000.0) + ((long) seconds * 1000000000.0) + ((long) minutes * 60000000000.0) + ((long) hours * 3600000000000.0)));
+    public long getNanoSeconds(int milliseconds, int seconds, int minutes, int hours) {
+        return ((long) (((long) milliseconds * 1000000.0) + ((long) seconds * 1000000000.0) + ((long) minutes * 60000000000.0) + ((long) hours * 36000000000000.0)));
     }
 
+    public GameTimer getGameTimer() {
+        return gametimer;
+    }
+    
+    public Timing removeTiming(Timing timing) {
+        updatesitr = 0;
+        while (updatesitr <= updatessize) {
+            atiming = updatesidx.get(updatesitr);
+            if (atiming.equals(timing)) {
+                updates.remove(atiming);
+                updatesidx.remove(updatesitr);
+                updatessize = updatesidx.size();
+                return atiming;
+            }
+        }
+        return null;
+    }
 }
