@@ -16,7 +16,6 @@
 package com.speakeasy.skyengine.core.timer;
 
 import java.util.HashMap;
-import java.util.function.BiConsumer;
 
 /**
  *
@@ -27,6 +26,10 @@ public class GameTimer extends Thread {
     private static boolean running = false;
     public static GameTimer gametimer;
     protected static HashMap<Timing, Boolean> updates;
+    private static HashMap<Integer, Timing> idxupdates;
+    private static int itrupdates = 0;
+    private static int sizeupdates = 0;
+    private static Timing atiming;
 
     private GameTimer(boolean run) {
         updates = new HashMap();
@@ -87,14 +90,13 @@ public class GameTimer extends Thread {
     }
 
     private void updateTimings() {
-        updates.forEach(new BiConsumer<Timing, Boolean>() {
-            @Override
-            public void accept(Timing timing, Boolean trigger) {
-                if (timing.update() > 0) {
-                    updates.put(timing, true);
-                }
+        itrupdates = 0;
+        while (itrupdates <= sizeupdates) {
+            atiming = idxupdates.get(itrupdates);
+            if (atiming.update() > 0) {
+                updates.put(atiming, true);
             }
-        });
+        }
     }
 
     private void async() {
@@ -103,6 +105,7 @@ public class GameTimer extends Thread {
 
     public void putTiming(Timing timing) {
         updates.put(timing, true);
+        idxupdates.put(idxupdates.size(), timing);
     }
 
     public void addTiming(int times) {
