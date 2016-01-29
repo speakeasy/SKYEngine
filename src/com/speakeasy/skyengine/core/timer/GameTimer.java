@@ -15,6 +15,8 @@
  */
 package com.speakeasy.skyengine.core.timer;
 
+import java.util.HashMap;
+
 /**
  *
  * @author SpeaKeasY
@@ -24,6 +26,7 @@ public class GameTimer extends Thread {
     private static int updatess = 100; // Number of updates per second.
     private static boolean running = false;
     public static GameTimer gametimer;
+    protected static HashMap<Timing, Boolean> updates; 
     
     private GameTimer(int updatess, boolean run) {
         GameTimer.updatess = updatess;
@@ -62,7 +65,7 @@ public class GameTimer extends Thread {
     private void loop() {
         long lastTime = System.nanoTime();
 
-        final double ns = 1000000000.0 / 1000; // Microsecond.
+        final double ns = 1000000000.0 / (10000000 / 5); // Microsecond.
         double delta = 0;
         long now;
         long ploss = 0;
@@ -99,4 +102,8 @@ public class GameTimer extends Thread {
         ;
     }
 
+    public void addTiming() {
+        ;
+    }
+    
 }

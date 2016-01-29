@@ -26,7 +26,7 @@ public class Game {
     protected static GameTimer gametimer;
     
     public Game() {
-        gametimer = GameTimer.newGameTimer();
+        gametimer = GameTimer.newGameTimer(true);
     }
     
 }
