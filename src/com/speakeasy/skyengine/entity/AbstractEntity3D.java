@@ -32,7 +32,7 @@ abstract class AbstractEntity3D implements Entity3D {
     public float getY() {
         return y;
     }
-    
+
     public float getZ() {
         return z;
     }
@@ -44,7 +44,7 @@ abstract class AbstractEntity3D implements Entity3D {
     public void setY(float y) {
         this.y = y;
     }
-    
+
     public void setZ(float z) {
         this.z = z;
     }

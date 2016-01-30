@@ -34,7 +34,7 @@ public enum PriorityLevel {
     PriorityLevel(int priority) {
         this.priority = priority;
     }
-    
+
     public int getPriority() {
         int thepriority = priority;
         return thepriority;

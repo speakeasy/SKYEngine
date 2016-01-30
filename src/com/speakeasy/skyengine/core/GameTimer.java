@@ -100,7 +100,7 @@ public class GameTimer extends Thread {
         }
     }
 
-    private void async() {  // Called every 5 milliseconds, display refresh rate.
+    private void async() { // Called every 5 milliseconds, display refresh rate.
         ;
     }
 
@@ -151,7 +151,7 @@ public class GameTimer extends Thread {
     public GameTimer getGameTimer() {
         return gametimer;
     }
-    
+
     public Timing removeTiming(Timing timing) {
         updatesitr = 0;
         while (updatesitr <= updatessize) {

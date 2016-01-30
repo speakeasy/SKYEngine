@@ -20,11 +20,11 @@ package com.speakeasy.skyengine.core;
  * @author SpeaKeasY
  */
 public class Game {
-    
+
     protected static GameTimer gametimer;
-    
+
     public Game() {
         gametimer = GameTimer.newGameTimer(true);
     }
-    
+
 }

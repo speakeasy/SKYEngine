@@ -20,21 +20,22 @@ package com.speakeasy.skyengine.core.threading;
  * @author SpeaKeasY
  */
 public class Priority {
+
     private PriorityLevel level;
-    
+
     public Priority() {
         ;
     }
-    
+
     public Priority(PriorityLevel level) {
         this.level = level;
     }
-    
+
     public PriorityLevel getPriorityLevel() {
         PriorityLevel thelevel = level;
         return thelevel;
     }
-    
+
     public void setPriorityLevel(PriorityLevel level) {
         this.level = level;
     }

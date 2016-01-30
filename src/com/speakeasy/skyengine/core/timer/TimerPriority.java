@@ -23,7 +23,7 @@ import com.speakeasy.skyengine.core.threading.Priority;
  * @author SpeaKeasY
  */
 public class TimerPriority extends Priority {
-    
+
     public TimerPriority(PriorityLevel level) {
         this.setPriorityLevel(level);
     }

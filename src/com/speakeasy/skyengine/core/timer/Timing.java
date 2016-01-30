@@ -42,15 +42,13 @@ public class Timing {
         this.times = times;
     }
 
-
-
     public long getTimeRemaining() {
         lasttimensB = System.nanoTime();
         timeleftns -= (lasttimensB - lasttimens);
         lasttimens = lasttimensB;
         return timeleftns;
     }
-    
+
     public int timesLeft() {
         return times;
     }
@@ -77,7 +75,5 @@ public class Timing {
     public void setTimes(int times) {
         this.times = times;
     }
-    
-    
 
 }

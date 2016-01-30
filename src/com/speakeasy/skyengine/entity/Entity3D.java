@@ -24,13 +24,13 @@ public interface Entity3D {
     public float getX();
 
     public float getY();
-    
+
     public float getZ();
 
     public void setX(float x);
 
     public void setY(float y);
-    
+
     public void setZ(float Z);
 
     public void setLocation(float x, float y, float z);

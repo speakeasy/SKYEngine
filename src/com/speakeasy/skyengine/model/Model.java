@@ -6,18 +6,15 @@ import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
 import static org.lwjgl.opengl.GL11.*;
 
-import com.obj.Face;
-import com.obj.Group;
-import com.obj.Material;
-import com.obj.Texture;
-import com.obj.TextureLoader;
-import com.obj.TextureCoordinate;
-import com.obj.Vertex;
-import com.obj.WavefrontObject;
+import com.speakeasy.skyengine.resources.io.filetype.obj.Face;
+import com.speakeasy.skyengine.resources.io.filetype.obj.Group;
+import com.speakeasy.skyengine.resources.io.filetype.obj.Material;
+import com.speakeasy.skyengine.resources.io.filetype.obj.Texture;
+import com.speakeasy.skyengine.resources.io.filetype.obj.TextureLoader;
+import com.speakeasy.skyengine.resources.io.filetype.obj.TextureCoordinate;
+import com.speakeasy.skyengine.resources.io.filetype.obj.Vertex;
+import com.speakeasy.skyengine.resources.io.filetype.obj.WavefrontObject;
 
-/**
- * @author Oskar
- */
 public class Model {
 
     private int _callListID;
@@ -26,7 +23,7 @@ public class Model {
     private final ArrayList<Vector3f> _vertexList;
     private final ArrayList<Vector3f> _normalList;
     private final ArrayList<Vector3f> _texcoordList;
-    private final ArrayList<ModelMesh> _meshList;
+    private final ArrayList<ModelMesh> _entityMeshList;
     private final HashMap<String, ModelMaterial> _materials = new HashMap<String, ModelMaterial>();
 
     private TextureLoader textureLoader;
@@ -35,19 +32,11 @@ public class Model {
 
     private boolean enableSmoothShading = true;
 
-    /*
-     private final List<Vector3f> vertices = new ArrayList<Vector3f>();
-     private final List<Vector2f> textureCoordinates = new ArrayList<Vector2f>();
-     private final List<Vector3f> normals = new ArrayList<Vector3f>();
-     private final List<Face> faces = new ArrayList<Face>();
-     private final HashMap<String, Material> materials = new HashMap<String, Material>();
-     private boolean enableSmoothShading = true;
-     */
     public Model() {
         _vertexList = new ArrayList<Vector3f>();
         _normalList = new ArrayList<Vector3f>();
         _texcoordList = new ArrayList<Vector3f>();
-        _meshList = new ArrayList<ModelMesh>();
+        _entityMeshList = new ModelMeshList();
         _obj = null;
         textureLoader = TextureLoader.instance();
     }
@@ -166,36 +155,23 @@ public class Model {
                 _texcoordList.add(new Vector3f(tc.getU(), tc.getV(), tc.getW()));
             }
 
-            /*      for( int vi=0; vi<g.indices.size(); vi++ )
-             {
-             int tc = (int)g.indices.get( vi );
-             mesh.addVertex( new Vector3( tc.getX(), tc.getY(), tc.getZ()) );
-             }
+            for (int vi = 0; vi < g.vertices.size(); vi++) {
+                Vertex tc = (Vertex) g.vertices.get(vi);
+                mesh.addVertex(new Vector3f(tc.getX(), tc.getY(), tc.getZ()));
+            }
 
-             for( int vi=0; vi<g.vertices.size(); vi++ )
-             {
-             Vertex tc = (Vertex)g.vertices.get( vi );
-             mesh.addVertex( new Vector3( tc.getX(), tc.getY(), tc.getZ()) );
-             }
+            for (int vi = 0; vi < g.normals.size(); vi++) {
+                Vertex tc = (Vertex) g.normals.get(vi);
+                mesh.addNormal(new Vector3f(tc.getX(), tc.getY(), tc.getZ()));
+            }
 
-             for( int vi=0; vi<g.normals.size(); vi++ )
-             {
-             Vertex tc = (Vertex)g.normals.get( vi );
-             mesh.addNormal( new Vector3( tc.getX(), tc.getY(), tc.getZ()) );
-             }
-
-             for( int vi=0; vi<g.texcoords.size(); vi++ )
-             {
-             TextureCoordinate tc = (TextureCoordinate)g.texcoords.get( vi );
-             mesh.addTexCoord( new Vector3( tc.getU(), tc.getV(), tc.getW()) );
-             }*/
+            for (int vi = 0; vi < g.texcoords.size(); vi++) {
+                TextureCoordinate tc = (TextureCoordinate) g.texcoords.get(vi);
+                mesh.addTexCoord(new Vector3f(tc.getU(), tc.getV(), tc.getW()));
+            }
             // Finally add mesh to scene
-            addMesh(mesh);
+            _entityMeshList.add(mesh);
         }
-    }
-
-    public void addMesh(ModelMesh mesh) {
-        _meshList.add(mesh);
     }
 
     public void enableStates() {
@@ -239,21 +215,6 @@ public class Model {
 
     public HashMap<String, ModelMaterial> getMaterials() {
         return _materials;
-    }
-
-    public ModelMesh getMeshByIdx(int i) {
-        return _meshList.get(i);
-    }
-
-    public ModelMesh getMeshByName(String name) {
-        for (int i = 0; i < _meshList.size(); i++) {
-            ModelMesh m = _meshList.get(i);
-            if (m._name.equals(name)) {
-                return _meshList.get(i);
-            }
-        }
-
-        return null;
     }
 
 }
