@@ -15,8 +15,8 @@
  */
 package com.speakeasy.skyengine.core.timer;
 
-import com.speakeasy.skyengine.core.timer.threading.PriorityLevel;
-import com.speakeasy.skyengine.core.timer.threading.Priority;
+import com.speakeasy.skyengine.core.threading.PriorityLevel;
+import com.speakeasy.skyengine.core.threading.Priority;
 
 /**
  *
