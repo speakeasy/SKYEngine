@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.speakeasy.skyengine.resources.io;
+package com.speakeasy.skyengine.core.threading;
+
 
 /**
  *
  * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class Loader {
-
+public interface TaskableThread {
+    
+    public boolean isAvailable();
+    
 }

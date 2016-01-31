@@ -21,22 +21,21 @@ package com.speakeasy.skyengine.core.threading;
  */
 public enum PriorityLevel {
 
-    MINIMUM(0),
-    VERY_LOW(1),
-    LOW(2),
-    MEDIUM(3),
-    HIGH(4),
-    VERY_HIGH(5),
-    MAXIMUM(6);
+    MINIMUM(1.285714285714286f),
+    VERY_LOW(2.571428571428571f),
+    LOW(3.857142857142857f),
+    MEDIUM(5.142857142857143f),
+    HIGH(6.428571428571429f),
+    VERY_HIGH(7.714285714285714f),
+    MAXIMUM(9f);
 
-    private final int priority;
+    private final float priority;
 
-    PriorityLevel(int priority) {
+    PriorityLevel(float priority) {
         this.priority = priority;
     }
 
-    public int getPriority() {
-        int thepriority = priority;
-        return thepriority;
+    public float getPriority() {
+        return priority;
     }
 }

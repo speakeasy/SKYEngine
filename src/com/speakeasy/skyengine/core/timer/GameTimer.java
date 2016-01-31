@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.speakeasy.skyengine.core;
+package com.speakeasy.skyengine.core.timer;
 
-import com.speakeasy.skyengine.core.timer.Timing;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -26,11 +26,12 @@ public class GameTimer extends Thread {
 
     private static boolean running = false;
     private static GameTimer gametimer;
-    protected static HashMap<Timing, Boolean> updates;
-    private static HashMap<Integer, Timing> updatesidx;
+    protected static HashMap<Timing, Integer> updates;
+    private static ArrayList<Timing> updatesidx;
     private static int updatesitr = 0;
     private static int updatessize = 0;
     private static Timing atiming;
+    private static int timesleft;
 
     private GameTimer(boolean run) {
         updates = new HashMap();
@@ -67,13 +68,8 @@ public class GameTimer extends Thread {
 
         while (running) {
             now = System.nanoTime();
-            delta = delta + ((now - lastTime) / ns);
             lastTime = now;
-
-            while (delta >= 1) {
-                updateTimings();
-                delta--;
-            }
+            updateTimings();
 
             try {
                 if (ploss >= 1) {
@@ -94,8 +90,9 @@ public class GameTimer extends Thread {
         updatesitr = 0;
         while (updatesitr <= updatessize) {
             atiming = updatesidx.get(updatesitr);
-            if (atiming.update() > 0) {
-                updates.put(atiming, true);
+            timesleft = atiming.update();
+            if (timesleft > 0) {
+                updates.put(atiming, timesleft);
             }
         }
     }
@@ -105,8 +102,8 @@ public class GameTimer extends Thread {
     }
 
     public void putTiming(Timing timing) {
-        updates.put(timing, true);
-        updatesidx.put(updatesidx.size(), timing);
+        updates.put(timing, timing.update());
+        updatesidx.add(timing);
     }
 
     public void addTiming(int times) {

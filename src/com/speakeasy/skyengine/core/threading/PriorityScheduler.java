@@ -19,6 +19,6 @@ package com.speakeasy.skyengine.core.threading;
  *
  * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class TaskHandlerThread {
-
+public class PriorityScheduler {
+    
 }

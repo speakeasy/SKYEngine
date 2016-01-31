@@ -1,4 +1,4 @@
-package com.speakeasy.skyengine.model;
+package com.speakeasy.skyengine.entity.model;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;

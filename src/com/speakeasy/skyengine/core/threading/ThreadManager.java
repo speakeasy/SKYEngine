@@ -15,10 +15,21 @@
  */
 package com.speakeasy.skyengine.core.threading;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class ThreadManager {
+public class ThreadManager extends Thread {
+    
+    private ArrayList<TaskableThread> threads = new ArrayList<TaskableThread>();
+    private ArrayList<Task> tasks = new ArrayList<Task>();
 
+    public ThreadManager() {
+        this.setPriority(MAX_PRIORITY);
+    }
+    
+    
+    
 }

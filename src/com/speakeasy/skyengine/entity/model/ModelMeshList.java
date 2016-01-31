@@ -13,30 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.speakeasy.skyengine.core.threading;
+package com.speakeasy.skyengine.entity.model;
+
+import java.util.ArrayList;
 
 /**
  *
- * @author SpeaKeasY
+ * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class Priority {
+public class ModelMeshList extends ArrayList<ModelMesh> {
 
-    private PriorityLevel level;
-
-    public Priority() {
+    public ModelMeshList() {
         ;
     }
 
-    public Priority(PriorityLevel level) {
-        this.level = level;
+    public ModelMeshList(ModelMesh mesh) {
+        this.add(mesh);
     }
 
-    public PriorityLevel getPriorityLevel() {
-        PriorityLevel thelevel = level;
-        return thelevel;
+    public ModelMesh getMeshByIdx(int i) {
+        return this.get(i);
     }
 
-    public void setPriorityLevel(PriorityLevel level) {
-        this.level = level;
+    public ModelMesh getMeshByName(String name) {
+        for (int i = 0; i < this.size(); i++) {
+            ModelMesh m = this.get(i);
+            if (m.getName().equals(name)) {
+                return this.get(i);
+            }
+        }
+
+        return null;
     }
+
 }

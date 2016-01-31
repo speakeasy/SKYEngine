@@ -15,10 +15,47 @@
  */
 package com.speakeasy.skyengine.core.threading;
 
+import com.speakeasy.skyengine.core.timer.Timing;
+import java.util.concurrent.Callable;
+
 /**
  *
  * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class Task {
+public class Task implements Callable<Boolean> {
+
+    private PriorityLevel plevel = PriorityLevel.MEDIUM;
+    private float priority = 5f;
+    private Timing timing;
+
+    public Task() {
+
+    }
+
+    public Task(PriorityLevel plevel) {
+        this.plevel = plevel;
+    }
+
+    public void setPriorityLevel(PriorityLevel plevel) {
+        this.plevel = plevel;
+    }
+
+    public void setPriority(float priority) {
+        this.priority = priority;
+    }
+
+    public PriorityLevel getPriorityLevel() {
+        return plevel;
+    }
+
+    public float getPriority() {
+        return priority;
+    }
+
+    @Override
+    public Boolean call() {
+        
+        return true;
+    }
 
 }

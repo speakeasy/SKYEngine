@@ -1,4 +1,4 @@
-package com.speakeasy.skyengine.player;
+package com.speakeasy.skyengine.entity.player;
 
 import com.speakeasy.skyengine.utils.math.Vector3;
 import org.lwjgl.input.Keyboard;

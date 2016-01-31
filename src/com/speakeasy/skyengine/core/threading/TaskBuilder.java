@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.speakeasy.skyengine.core.timer;
-
-import com.speakeasy.skyengine.core.threading.PriorityLevel;
-import com.speakeasy.skyengine.core.threading.Priority;
+package com.speakeasy.skyengine.core.threading;
 
 /**
  *
- * @author SpeaKeasY
+ * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class TimerPriority extends Priority {
-
-    public TimerPriority(PriorityLevel level) {
-        this.setPriorityLevel(level);
-    }
+public class TaskBuilder {
+    
 }

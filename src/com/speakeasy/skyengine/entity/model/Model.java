@@ -1,4 +1,4 @@
-package com.speakeasy.skyengine.model;
+package com.speakeasy.skyengine.entity.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

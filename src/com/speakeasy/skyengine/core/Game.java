@@ -15,11 +15,13 @@
  */
 package com.speakeasy.skyengine.core;
 
+import com.speakeasy.skyengine.core.timer.GameTimer;
+
 /**
  *
  * @author SpeaKeasY
  */
-public class Game {
+public class Game extends Thread {
 
     protected static GameTimer gametimer;
 

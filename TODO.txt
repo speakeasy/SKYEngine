@@ -6,3 +6,21 @@ Game thread -> Thread pool manager -> priority thread pools -> worker threadss
         ^----remaining work-----<-/------------------<-/
 
 	
+	
+	
+	make objects
+	render
+	
+	decide which objects to update first, using last update, priority,
+	player position etc.
+	sort objects into resortable array lists based on priorty.
+	ability to add and remove from resortable array lists.
+	ability to move objects from one array list to another.
+	ability to move objects up in the array list.
+	schedule updates into thread pool with priority for worker.
+	move objects into a primary thread pool queue resortable list.
+	same thing as other lists on a single list.
+	
+	workers update objects.
+	
+	
