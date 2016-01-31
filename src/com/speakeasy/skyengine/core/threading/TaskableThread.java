@@ -15,13 +15,48 @@
  */
 package com.speakeasy.skyengine.core.threading;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author Kevin Owen Burress <speakeasysky@gmail.com>
- */
-public interface TaskableThread {
+public class TaskableThread extends Thread {
+
+    Task task;
+    private PriorityLevel plevel;
+    private float priority = 5;
+    int index;
     
-    public boolean isAvailable();
+    private ThreadManager threadmanager;
+
+    TaskableThread(int index, ThreadManager threadmanager) {
+        this.setPriority(NORM_PRIORITY);
+        this.index = index;
+        this.threadmanager = threadmanager;
+    }
+
+    @Override
+    public void start() {
+        this.priority = (int) plevel.getPriority();
+        task.executeTask();
+        threadmanager.taskFinished(index);
+    }
+
+    public void assignTask(Task task) {
+        this.task = task;
+        this.start();
+    }
     
+    @Override
+    public void finalize() {
+        try {
+            threadmanager.taskFinished(this.index);
+            threadmanager = null;
+        } finally {
+            try {
+                super.finalize();
+            } catch (Throwable ex) {
+                Logger.getLogger(TaskableThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
 }

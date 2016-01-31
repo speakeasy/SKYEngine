@@ -15,10 +15,35 @@
  */
 package com.speakeasy.skyengine.core.threading;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class PriorityScheduler {
+public class PriorityScheduler extends Thread {
+    private static ArrayList<Task> tasks;
+    private static ArrayList<Task> comptasks = ThreadManager.tasks;
+    private static int taskssize;
+    
+    public PriorityScheduler(ArrayList<Task> tasks, int tasksize) {
+        this.tasks = tasks;
+        this.taskssize = tasksize;
+        this.setPriority(9);
+    }
+    
+    private void sortTasks() {
+        ;
+    }
+    
+    private void weighTasks() {
+        
+    }
+    
+    private void compareTasks() {
+        
+    }
+    
+    
     
 }

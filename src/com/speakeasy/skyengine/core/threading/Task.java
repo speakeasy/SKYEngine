@@ -17,12 +17,14 @@ package com.speakeasy.skyengine.core.threading;
 
 import com.speakeasy.skyengine.core.timer.Timing;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class Task implements Callable<Boolean> {
+public class Task implements Callable<> {
 
     private PriorityLevel plevel = PriorityLevel.MEDIUM;
     private float priority = 5f;
@@ -56,6 +58,22 @@ public class Task implements Callable<Boolean> {
     public Boolean call() {
         
         return true;
+    }
+    
+    public void executeTask() {
+        ;
+    }
+    
+    @Override
+    public void finalize() {
+        try {
+            this.plevel = null;
+            this.timing = null;
+            super.finalize();
+        } catch (Throwable ex) {
+            Logger.getLogger(Task.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
 }
