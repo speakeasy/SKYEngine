@@ -39,6 +39,8 @@ public class ThreadManager extends Thread {
 
     protected static ArrayList<Task> usedtasks = new ArrayList<Task>(); // Recycling buffer.
     protected static int usedtaskssize = 0;
+    
+    private static PriorityScheduler scheduler;
 
     static int ui = 0;
     static boolean ub = false;
@@ -58,6 +60,7 @@ public class ThreadManager extends Thread {
         }
         threadswaiting = START_THREADS;
         ui = 0;
+        scheduler = new PriorityScheduler(tasks, taskssize);
     }
 
     @Override

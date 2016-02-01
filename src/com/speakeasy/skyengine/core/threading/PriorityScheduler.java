@@ -15,6 +15,7 @@
  */
 package com.speakeasy.skyengine.core.threading;
 
+import com.speakeasy.skyengine.core.timer.Timing;
 import java.util.ArrayList;
 
 /**
@@ -23,8 +24,10 @@ import java.util.ArrayList;
  */
 public class PriorityScheduler extends Thread {
     private static ArrayList<Task> tasks;
-    private static ArrayList<Task> comptasks = ThreadManager.tasks;
+    private static ArrayList<Task> thesetasks;
     private static int taskssize;
+    
+    private static Timing atiming;
     
     public PriorityScheduler(ArrayList<Task> tasks, int tasksize) {
         this.tasks = tasks;
