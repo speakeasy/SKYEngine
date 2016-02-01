@@ -22,7 +22,3 @@ Game thread -> Thread pool manager -> priority thread pools -> worker threadss
 	same thing as other lists on a single list.
 	
 	workers update objects.
-	
-	
-	I think Russian hackers are cool and I don't want to talk about nobody anymore or have any accountability or publicity or importance. I don't want to think Russian government hackers are cool or uncool and I don't like the NSA. I don't feel the same way about the USA. In Russia I would be fine with a home and a wife and kids and some hacker friends and hacking everything possible but russia. Here I want as much money as I want, when I want it, no questions asked. Either way I want to git push.
-	
