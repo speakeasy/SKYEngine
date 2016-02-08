@@ -1,17 +1,23 @@
 package com.speakeasy.skyengine.entity.player;
 
 import com.speakeasy.skyengine.utils.math.Vector3;
+import java.util.Observable;
+//import net.java.games.input.Controller;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-public class Camera {
+public class Camera extends Observable {
 
     private static Vector3 position = new Vector3();
     private static Vector3 oldPosition = new Vector3();
+
     private static Vector3 rotation = new Vector3();
     private static Vector3 oldRotation = new Vector3();
-    private static final float speed = 0.045f;
+
+    private static final float speed = 0.05f;
+    //private static Controller controller;
+    private static Vector3[] positionPS = new Vector3[2];
 
     public static float getCamX() {
         return position.getX();
@@ -42,11 +48,27 @@ public class Camera {
     }
 
     public static void init() {
+        /*if (ControllerEnvironment.getDefaultEnvironment().getControllers().length > 0) {
+         for (Controller controller : ControllerEnvironment.getDefaultEnvironment().getControllers()) {
+         if (controller.getType() == Controller.Type.GAMEPAD) {
+         Camera.controller = controller;
+         break;
+         }
+         }
+         } else { */
+
+        positionPS[0] = position;
+        positionPS[1] = rotation;
         Mouse.setGrabbed(true);
+        //}
     }
 
     public static boolean hasNotMoved() {
         return oldPosition.equals(position) && rotation.equals(oldRotation);
+    }
+
+    public static Vector3[] getPositionRotation() {
+        return positionPS;
     }
 
     public static String update(int delta) {

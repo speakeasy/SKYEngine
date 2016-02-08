@@ -22,3 +22,8 @@ Game thread -> Thread pool manager -> priority thread pools -> worker threadss
 	same thing as other lists on a single list.
 	
 	workers update objects.
+
+	Reflecting on the most efficient way to register meshes for updates..
+Entity, well Entity has a static timing, and coordinates, and timing has an ArrayList<Runnable> that can be accessed by ThreadManager. Then I need a moving average of the target timing and priority weight for the last 255 timings or so. And the priority weight is based on base priority for the Runnable, the timing and the distance from the camera and the frustum. And that sets the priority of the task with the runnable assigned to it which is scheduled into the thread pool for things like mob updates to reduce lag. So I want my mob to be priority ten to react when hit. And when I make an MMO I don't want the server to tell me if the mob was hit when it is in a certain range or if there is a gun involved if the data matches up with the lag average. And that means I need to use a curve for calculating the moving average because a mob isn't going to appear in front of the player when they are 35f away. So the distance and timing target are the curve. And that makes java more potable for gaming. There is no point in using the overhead of Observable or Event or Callable logic.
+
+I don't want to go through the list of tasks twice, so using a moving average helps save time. It's probably better to keep a moving average in each timing as well as a global moving average and average those based on the priority but not the player position or camera facing until there is a better way to do that.

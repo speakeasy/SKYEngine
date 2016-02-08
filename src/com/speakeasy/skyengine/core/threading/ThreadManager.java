@@ -16,6 +16,8 @@
 package com.speakeasy.skyengine.core.threading;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,21 +25,21 @@ import java.util.logging.Logger;
  *
  * @author Kevin Owen Burress <speakeasysky@gmail.com>
  */
-public class ThreadManager extends Thread {
+public class ThreadManager extends Thread implements Observer {
 
     private static final int MAX_THREADS = 255;
     private static final int START_THREADS = 64;
-    protected static ArrayList<TaskableThread> threads = new ArrayList<TaskableThread>();
+    protected static ArrayList<TaskableThread> threads = new ArrayList<>();
     protected static int threadssize = 0;
     protected static Boolean[] waitingthreads = new Boolean[MAX_THREADS];
     protected static int threadswaiting = 0;
 
     private static TaskableThread athread;
 
-    static ArrayList<Task> tasks = new ArrayList<Task>();
+    static ArrayList<Task> tasks = new ArrayList<>();
     static int taskssize = 0;
 
-    protected static ArrayList<Task> usedtasks = new ArrayList<Task>(); // Recycling buffer.
+    protected static ArrayList<Task> usedtasks = new ArrayList<>(); // Recycling buffer.
     protected static int usedtaskssize = 0;
     
     private static PriorityScheduler scheduler;
@@ -63,16 +65,23 @@ public class ThreadManager extends Thread {
         scheduler = new PriorityScheduler(tasks, taskssize);
     }
 
-    @Override
+    /*@Override
     public void start(Object... o) {
         ;
-    }
+    }*/
 
     private void assignTasks() {
+        while(lock) {
+            try {
+                Thread.sleep(0, 10);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ThreadManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         for (; ui < threadssize; ui++) {
             if (waitingthreads[ui]) {
                 if (taskssize >= 0) {
-                    threads.get(ui).assignTask(tasks.get(taskssize--));
+                    threads.get(ui).assignTask(tasks.remove(taskssize--));
                     waitingthreads[ui] = false;
                     threadswaiting--;
                 } else {
@@ -98,12 +107,18 @@ public class ThreadManager extends Thread {
     public void taskFinished(int threadindex) {
         athread = threads.get(threadindex);
         usedtasks.add(athread.task);
+        athread.task.setNotExecuted();
         usedtaskssize++;
         athread.task = null;
         athread = null;
         waitingthreads[threadindex] = true;
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     @Override
     public void finalize() {
         try {
@@ -117,7 +132,10 @@ public class ThreadManager extends Thread {
         } catch (Throwable ex) {
             Logger.getLogger(ThreadManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+    }
+    
+    public static PriorityScheduler getPriorityScheduler() {
+        return ThreadManager.scheduler;
     }
 
 }

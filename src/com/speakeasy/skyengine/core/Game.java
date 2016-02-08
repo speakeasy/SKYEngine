@@ -16,6 +16,7 @@
 package com.speakeasy.skyengine.core;
 
 import com.speakeasy.skyengine.core.timer.GameTimer;
+import com.speakeasy.skyengine.entity.player.Camera;
 
 /**
  *
@@ -24,9 +25,12 @@ import com.speakeasy.skyengine.core.timer.GameTimer;
 public class Game extends Thread {
 
     protected static GameTimer gametimer;
+    protected static Camera camera;
 
     public Game() {
         gametimer = GameTimer.newGameTimer(true);
+        camera = new Camera();
+        Camera.init();
     }
 
 }
