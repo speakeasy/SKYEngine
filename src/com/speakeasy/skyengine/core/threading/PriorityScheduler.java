@@ -104,6 +104,8 @@ public class PriorityScheduler extends Thread {
             movingAverage.add(uf / (movingAverage.size() + 1));
             movingAverage.remove(0);
         }
+        uavg = uf = 0;
+        ui = ui2 = 0;
     }
 
     private void updateTasks() {
