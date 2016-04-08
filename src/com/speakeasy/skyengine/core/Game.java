@@ -17,6 +17,9 @@ package com.speakeasy.skyengine.core;
 
 import com.speakeasy.skyengine.core.timer.GameTimer;
 import com.speakeasy.skyengine.entity.player.Camera;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 
 /**
  *
@@ -25,9 +28,25 @@ import com.speakeasy.skyengine.entity.player.Camera;
 public class Game extends Thread {
 
     protected static GameTimer gametimer;
+    public static Game game;
     protected static Camera camera;
+    
+    private final static int width = 800;
+    private final static int height = 600;
+    private final static int FRAME_RATE = 60;
 
-    public Game() {
+    public Game(String title) {
+        try {
+            Display.setDisplayMode(new DisplayMode(width,height));
+            Display.create();
+        } catch (LWJGLException e) {
+            System.out.println(e);
+        }
+        Display.setTitle(title);
+        Game game = new Game();
+        game.init();
+        int delta = 0;
+        
         gametimer = GameTimer.newGameTimer(true);
         camera = new Camera();
         Camera.init();

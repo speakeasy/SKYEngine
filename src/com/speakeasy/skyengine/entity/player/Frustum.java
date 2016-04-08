@@ -17,7 +17,7 @@ public class Frustum {
 
     private static float[][] frustum = new float[6][4];
 
-    public static boolean isPointInFrustum(float x, float z, float y) {
+    public static boolean isPointInFrustum(float x, float y, float z) {
         for (int p = 0; p < 6; p++) {
             if (frustum[p][0] * x + frustum[p][1] * y + frustum[p][2] * z + frustum[p][3] <= 0) {
                 return false;
@@ -26,7 +26,7 @@ public class Frustum {
         return true;
     }
 
-    public static boolean isSphereInFrustum(float x, float z, float y, float radius) {
+    public static boolean isSphereInFrustum(float x, float y, float z, float radius) {
         for (int p = 0; p < 6; p++) {
             if (frustum[p][0] * x + frustum[p][1] * y + frustum[p][2] * z + frustum[p][3] <= -radius) {
                 return false;
@@ -35,7 +35,7 @@ public class Frustum {
         return true;
     }
 
-    public static int sphereInFrustum(float x, float z, float y, float radius) {
+    public static int sphereInFrustum(float x, float y, float z, float radius) {
         int c = 0;
         float d;
 
@@ -51,7 +51,7 @@ public class Frustum {
         return (c == 6) ? 2 : 1;
     }
 
-    public static boolean isCubeInFrustum(float x, float z, float y, float size) {
+    public static boolean isCubeInFrustum(float x, float y, float z, float size) {
         for (int p = 0; p < 6; p++) {
             if (frustum[p][0] * (x - size) + frustum[p][1] * (y - size) + frustum[p][2] * (z - size) + frustum[p][3] > 0) {
                 continue;
@@ -82,7 +82,7 @@ public class Frustum {
         return true;
     }
 
-    public static int cubeInFrustum(float x, float z, float y, float size) {
+    public static int cubeInFrustum(float x, float y, float z, float size) {
         int c;
         int c2 = 0;
 
