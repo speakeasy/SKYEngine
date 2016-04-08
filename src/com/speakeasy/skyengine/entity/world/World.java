@@ -6,13 +6,13 @@ import java.io.IOException;
 
 public class World {
 
-    private static int WORLD_SIZE_X = 1;
-    private static int WORLD_SIZE_Y = 1;
+    // TODO: CONVERT TO Model.class hierarchy.
+    private static int WORLD_SIZE = 1; // Render distance (Chunks)
     private static WorldMesh[][] meshes;
     private WorldChunkHeightMapGenerator cmgen;
 
-    public World(int x, int y) {
-        meshes = new WorldMesh[WORLD_SIZE_X][WORLD_SIZE_Y];
+    public World() {
+        meshes = new WorldMesh[WORLD_SIZE][WORLD_SIZE];
         createWorld();
     }
 
@@ -23,25 +23,20 @@ public class World {
         return null;
     }
 
-    public int getHeight(int cx, int cy, int x, int y) {
-        return meshes[cx][cy].getMeshPointHeight(x, y);
+    public int getHeightAtPoint(int chunk_x, int chunk_y, int x, int y) {
+        return meshes[chunk_x][chunk_y].getMeshPointHeight(x, y);
     }
 
     public void createWorld() {
         for (int i = 0; i < meshes.length; i++) {
             for (int j = 0; j < meshes[0].length; j++) {
                 meshes[i][j] = new WorldMesh(i, j, this, cmgen);
-            }
-        }
-
-        for (int i = 0; i < meshes.length; i++) {
-            for (int j = 0; j < meshes[0].length; j++) {
                 meshes[i][j].init();
             }
         }
     }
 
-    public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {
+    /*public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {
         for (int i = 0; i < meshes.length; i++) {
             for (int j = 0; j < meshes[0].length; j++) {
                 int points = meshes[i][j].inFrustum();
@@ -56,7 +51,7 @@ public class World {
                 }
             }
         }
-    }
+    }*/
 
     public int getWidth() {
         return meshes.length;
