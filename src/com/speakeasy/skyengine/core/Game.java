@@ -84,8 +84,8 @@ public class Game {
     protected static GameTimer gametimer;
     protected static Camera camera;
 
-    public static int WINDOW_WIDTH = 800;
-    public static int WINDOW_HEIGHT = 600;
+    public static int WIDTH = 800;
+    public static int HEIGHT = 600;
     private static int FRAME_RATE = 60;
 
     public Game() {

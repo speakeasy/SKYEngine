@@ -2,9 +2,15 @@ package com.speakeasy.skyengine.entity.player;
 
 import com.speakeasy.skyengine.core.Game;
 import com.speakeasy.skyengine.utils.math.Vector3;
+import java.nio.DoubleBuffer;
 import java.util.Observable;
+import org.lwjgl.BufferUtils;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
+import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -26,9 +32,14 @@ public class Camera extends Observable {
 
     private GLFWKeyCallback keyCallback;
     private GLFWErrorCallback errorCallback;
-    
+
     private long windowID;
-    
+    private boolean mouseLocked;
+    private float newX;
+    private float newY;
+    private float deltaX;
+    private float deltaY;
+
     public Camera(long windowID) {
         this.windowID = windowID;
     }
@@ -73,7 +84,7 @@ public class Camera extends Observable {
 
         positionPS[0] = position;
         positionPS[1] = rotation;
-        glfwSetInputMode(windowID , GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(windowID, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         //}
     }
 
@@ -91,7 +102,7 @@ public class Camera extends Observable {
         updateRotation(delta);
         updatePosition(delta);
         updatePerspective();
-        glfwSetCursorPos(windowID, Game.WINDOW_WIDTH * 0.5f, Game.WINDOW_HEIGHT * 0.5f);
+        glfwSetCursorPos(windowID, Game.WIDTH * 0.5f, Game.HEIGHT * 0.5f);
         return position.toString();
     }
 
@@ -122,23 +133,38 @@ public class Camera extends Observable {
 
     public void updateRotation(int delta) {
         //Mouse Input for looking around...
-        if (Mouse.isGrabbed()) {
-            float mouseDX = Mouse.getDX() * 0.128f;
-            float mouseDY = Mouse.getDY() * 0.128f;
+        if (glfwGetMouseButton(windowID, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
+            glfwSetCursorPos(windowID, 800 / 2, 600 / 2);
+            mouseLocked = true;
+        }
+        if (mouseLocked) {
+            DoubleBuffer x = BufferUtils.createDoubleBuffer(1);
+            DoubleBuffer y = BufferUtils.createDoubleBuffer(1);
 
-            if (rotation.getZ() + mouseDX >= 360) {
-                rotation.setZ(rotation.getZ() + mouseDX - 360);
-            } else if (rotation.getZ() + mouseDX < 0) {
-                rotation.setZ(rotation.getZ() + mouseDX + 360);
+            glfwGetCursorPos(windowID, x, y);
+
+            x.rewind();
+            y.rewind();
+
+            newX = (float) x.get();
+            newY = (float) y.get();
+
+            deltaX = (float) (newX - (Game.WIDTH * 0.5));
+            deltaY = (float) (newY - (Game.HEIGHT * 0.5));
+
+            if (rotation.getZ() + deltaX >= 360) {
+                rotation.setZ(rotation.getZ() + deltaX - 360);
+            } else if (rotation.getZ() + deltaX < 0) {
+                rotation.setZ(rotation.getZ() + deltaX + 360);
             } else {
-                rotation.setZ(rotation.getZ() + mouseDX);
+                rotation.setZ(rotation.getZ() + deltaX);
             }
 
-            if (rotation.getX() - mouseDY >= -89 && rotation.getX() - mouseDY <= 89) {
-                rotation.setX(rotation.getX() - mouseDY);
-            } else if (rotation.getX() - mouseDY < -89) {
+            if (rotation.getX() - deltaY >= -89 && rotation.getX() - deltaY <= 89) {
+                rotation.setX(rotation.getX() - deltaY);
+            } else if (rotation.getX() - deltaY < -89) {
                 rotation.setX(-89);
-            } else if (rotation.getX() - mouseDY > 89) {
+            } else if (rotation.getX() - deltaY > 89) {
                 rotation.setX(89);
             }
         }
