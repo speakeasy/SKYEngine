@@ -78,15 +78,15 @@ import static org.lwjgl.system.MemoryUtil.*;
  */
 public class Game {
 
-    private long windowID;
+    protected long windowID;
     public static Game game;
 
     protected static GameTimer gametimer;
-    protected static Camera camera;
+    public static Camera camera;
 
     public static int WIDTH = 800;
     public static int HEIGHT = 600;
-    private static int FRAME_RATE = 60;
+    public static int FRAME_RATE = 60;
 
     public Game() {
         if (!glfwInit()) {

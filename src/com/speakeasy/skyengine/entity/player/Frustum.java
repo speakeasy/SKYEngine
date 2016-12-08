@@ -130,10 +130,10 @@ public class Frustum {
         t = 0;
 
         /* Get the current PROJECTION matrix from OpenGL */
-        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, fbProjection);
+        GL11.glGetFloatv(GL11.GL_PROJECTION_MATRIX, fbProjection);
 
         /* Get the current MODELVIEW matrix from OpenGL */
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, fbModelview);
+        GL11.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, fbModelview);
 
         for (int i = 0; i < fbProjection.capacity(); i++) {
             proj[i] = fbProjection.get(i);

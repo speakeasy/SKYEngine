@@ -15,6 +15,7 @@
  */
 package com.speakeasy.skyengine.core.threading;
 
+import com.speakeasy.skyengine.core.Game;
 import com.speakeasy.skyengine.core.timer.Timing;
 import com.speakeasy.skyengine.entity.player.Camera;
 import com.speakeasy.skyengine.utils.math.Vector3;
@@ -52,7 +53,7 @@ public class PriorityScheduler extends Thread {
         this.comparator = (Comparator<Task>) (Task t1, Task t2) -> Float.compare(t1.priority, t2.priority);
         this.tasks = tasks;
         this.taskssize = tasksize;
-        camera = Camera.getPositionRotation();
+        camera = Game.camera.getPositionRotation();
         this.setPriority(9);
     }
 
