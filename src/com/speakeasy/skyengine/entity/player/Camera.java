@@ -5,12 +5,20 @@ import com.speakeasy.skyengine.utils.math.Vector3;
 import java.nio.DoubleBuffer;
 import java.util.Observable;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
+import static org.lwjgl.glfw.GLFW.glfwGetKey;
 import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -107,26 +115,28 @@ public class Camera extends Observable {
     }
 
     public void updatePosition(int delta) {
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+        glfwPollEvents();
+        if (glfwGetKey(windowID, GLFW_KEY_W) == 1) {
             position.setX(position.getX() - (float) (Math.sin(-rotation.getZ() * Math.PI / 180) * speed * delta));
             position.setY(position.getY() - (float) (Math.cos(-rotation.getZ() * Math.PI / 180) * speed * delta));
+        } else {
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+        if (glfwGetKey(windowID, GLFW_KEY_S) == 1) {
             position.setX(position.getX() + (float) (Math.sin(-rotation.getZ() * Math.PI / 180) * speed * delta));
             position.setY(position.getY() + (float) (Math.cos(-rotation.getZ() * Math.PI / 180) * speed * delta));
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+        if (glfwGetKey(windowID, GLFW_KEY_A) == 1) {
             position.setX(position.getX() + (float) (Math.sin((-rotation.getZ() - 90) * Math.PI / 180) * speed * delta));
             position.setY(position.getY() + (float) (Math.cos((-rotation.getZ() - 90) * Math.PI / 180) * speed * delta));
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+        if (glfwGetKey(windowID, GLFW_KEY_D) == 1) {
             position.setX(position.getX() + (float) (Math.sin((-rotation.getZ() + 90) * Math.PI / 180) * speed * delta));
             position.setY(position.getY() + (float) (Math.cos((-rotation.getZ() + 90) * Math.PI / 180) * speed * delta));
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+        if (glfwGetKey(windowID, GLFW_KEY_SPACE) == 1) {
             position.setZ(position.getZ() + speed * delta);
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+        if (glfwGetKey(windowID, GLFW.GLFW_KEY_LEFT_SHIFT) == 1) {
             position.setZ(position.getZ() - speed * delta);
         }
     }
