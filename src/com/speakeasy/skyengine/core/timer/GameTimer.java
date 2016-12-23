@@ -26,8 +26,8 @@ public class GameTimer extends Thread {
 
     private static boolean running = false;
     private static GameTimer gametimer;
-    protected static HashMap<Timing, Integer> updates;
-    private static ArrayList<Timing> updatesidx;
+    protected static HashMap<Timing, Integer> updates = new HashMap<Timing, Integer>();
+    private static ArrayList<Timing> updatesidx = new ArrayList<Timing>();
     private static int updatesitr = 0;
     private static int updatessize = 0;
     private static Timing atiming;
@@ -69,14 +69,20 @@ public class GameTimer extends Thread {
         while (running) {
             now = System.nanoTime();
             lastTime = now;
-            updateTimings();
+            if (this.updatesidx.size() > 0) {
+                updateTimings();
+            }
 
             try {
                 if (ploss >= 1) {
                     ploss--;
                     now--;
                 }
-                Thread.sleep(0, (sleep = 5000 - (int) (ploss = System.nanoTime() - now)));
+                sleep = (int) (ploss = System.nanoTime() - now);
+                if (sleep > 0) {
+                    Thread.sleep(10, sleep);
+                }
+                
                 ploss = ploss - sleep;
             } catch (InterruptedException ie) {
                 ;

@@ -115,7 +115,8 @@ public class Game {
     }
 
     public void init() {
-        gametimer = GameTimer.newGameTimer(true);
+        gametimer = GameTimer.newGameTimer(false);
+        gametimer.start();
         camera = new Camera(windowID);
         camera.init();
     }
